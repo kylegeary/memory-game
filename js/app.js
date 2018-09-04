@@ -1,12 +1,16 @@
 
 //Declare card and move variables
-let card = document.getElementsByClassName("card");
-let cards = [...card];
+
 let matchedCard = document.getElementsByClassName("match");
 let openedCards = [];
 let moves = 0;
+const card = document.getElementsByClassName("card");
+let cards = [...card];
 const counter = document.querySelector(".moves");
 const deck = document.querySelector(".deck");
+const modal = document.querySelector(".modal");
+const closeButton = document.querySelector(".close-button");
+
 
 //Card event listener
 for (let i = 0; i < cards.length; i++){
@@ -57,6 +61,19 @@ function startGame() {
 }
 window.onload = startGame();
 
+//Modal toggle functions
+function toggleModal() {
+	modal.classList.toggle("show-modal");
+}
+function windowOnClick() {
+	if (event.target === modal) {
+		toggleModal();
+	}
+}
+//Modal event listeners
+closeButton.addEventListener("click", toggleModal);
+window.addEventListener("click", windowOnClick);
+modal.addEventListener("click", toggleModal);
 
 //check if opened cards match
 function cardOpen() {
@@ -121,8 +138,7 @@ function moveCounter() {
 //Checks if all cards have been matched
 function checkMatchedCards(){
 	if (matchedCard.length == 16) {
-		alert("you did it!");
-		//NEED TO ADD MODAL WITH FINAL SCORE
+		toggleModal();
 	}
 }
 
@@ -137,11 +153,11 @@ function checkMatchedCards(){
 	A. DONE - display the card's symbol (put this functionality in another function that you call from this one)
 	B. DONE - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
 	C. DONE - if the list already has another card, check to see if the two cards match
-		AA. DONE - if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
-		BB. DONE - if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
-		CC. DONE - increment the move counter and display it on the page (put this functionality in another function that you call from this one)
-		DD.  - if all cards match, display a modal with a congratulatory message, final rating, and time to win (put this functionality in another function called from here).
-		EE.  - In the modal, the player should be asked if they want to play again.
+		AA. DONE - if the cards match, lock them in the open position (put this functionality in another function that you call from this one)
+		BB. DONE - if the cards don't match, remove them from the list and hide the card's symbol (put this functionality in another function)
+		CC. DONE - increment the move counter and display it on the page (put this functionality in another function)
+		DD.  - if all cards match, display a modal with a message, final rating, and time to win (put this functionality in another function)
+		EE.  - i n the modal, the player should be asked if they want to play again.
 
 3.  - When starting a game, a displayed timer should also start. Once the player wins the game, the timer stops.
 
