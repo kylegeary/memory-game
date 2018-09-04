@@ -122,6 +122,7 @@ function moveCounter() {
 function checkMatchedCards(){
 	if (matchedCard.length == 16) {
 		alert("you did it!");
+		//NEED TO ADD MODAL WITH FINAL SCORE
 	}
 }
 
@@ -139,6 +140,14 @@ function checkMatchedCards(){
 		AA. DONE - if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
 		BB. DONE - if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
 		CC. DONE - increment the move counter and display it on the page (put this functionality in another function that you call from this one)
-		DD.  - if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
+		DD.  - if all cards match, display a modal with a congratulatory message, final rating, and time to win (put this functionality in another function called from here).
+		EE.  - In the modal, the player should be asked if they want to play again.
 
+3.  - When starting a game, a displayed timer should also start. Once the player wins the game, the timer stops.
+
+4.  - The game should display a star rating (from 1 to 3) reflecting the player's performance. It should display at least 3 stars at the start and go down after some moves.
+
+5.  - A restart button should allow the player to reset the game board, the timer, and the star rating.
+
+6.  - All application components are usable across modern desktop, tablet, and phone browsers.
 */
