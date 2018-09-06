@@ -37,6 +37,10 @@ h1 {
  * Styles for the deck of cards
  */
 
+ .clock {
+     margin-left: 5.5rem;
+ }
+
 .deck {
     width: 660px;
     min-height: 680px;
@@ -92,13 +96,14 @@ pointer-events: none;
 .deck .card.noMatch {
 	-webkit-backface-visibility: visible !important;
 	backface-visibility: visible !important;
-	animation-duration: .75s;
+	animation-duration: 0.75s;
 	background: #e2043b;
 }
 
 /*
  * Styles for the Score Panel
  */
+
 
 .score-panel {
     text-align: left;
