@@ -1,55 +1,49 @@
-
-/** card and move variables **/
-let card = document.getElementsByClassName("card");
+//CARD VARIABLES
+const deck = document.querySelector(".deck");
+const card = document.getElementsByClassName("card");
 let cards = [...card];
-const stars = document.querySelectorAll(".fa-star");
-let matchedCard = document.getElementsByClassName("match");
 let openedCards = [];
+let matchedCard = document.getElementsByClassName("match");
+let matchedCards = [...card];
+
+//STAR VARIABLES
+const star = document.querySelectorAll(".fa-star");
+let stars = [...star];
+let starScore = "";
+
+//MOVE VARIABLES
 let move = 0;
 const counter = document.querySelector(".moves");
-const deck = document.querySelector(".deck");
 const modal = document.querySelector(".modal");
-const closeButton = document.querySelector(".close-button");
 
-
-/** card and modal event listeners **/
-closeButton.addEventListener("click", toggleModal);
-window.addEventListener("click", windowOnClick);
-modal.addEventListener("click", toggleModal);
+//CARD EVENT LISTENERS
 for (let i = 0; i < cards.length; i++){
 	cards[i].addEventListener("click", addToArray);
 	cards[i].addEventListener("click", displayCard);
 }
 
-/** game clock **/
+//GAME CLOCK FUNCTION
+const clock = document.querySelector(".clock");
 let second = 0, minute = 0; hour = 0;
-let timer = document.querySelector(".clock");
-let interval;
+let time;
 function startTimer() {
-	interval = setInterval(function () {
-		timer.innerHTML = minute + " mins " + second + " secs";
-		second++;
-		if (second == 60) {
-			minute++;
-			second = 0;
-		}
-		if (minute == 60) {
-			hour++;
-			minute = 0;
+	time = setInterval(function () {
+		if (modal.classList.contains("modalShow") != true) {
+			clock.innerHTML = minute + " mins " + second + " secs";
+			second++;
+			if (second == 60) {
+				minute++;
+				second = 0;
+			}
+			if (minute == 60) {
+				hour++;
+				minute = 0;
+			}
 		}
 	}, 1000);
 }
 
-/** Card display, array, and shuffle functions (shuffle from http://stackoverflow.com/a/2450976) **/
-function displayCard() {
-	this.classList.toggle("disabled");
-	this.classList.toggle("open");
-	this.classList.toggle("show");
-	cardOpen();
-}
-function addToArray(){
-	openedCards.push(this);
-}
+//GAME START FUNCTIONS (shuffle from http://stackoverflow.com/a/2450976)
 function shuffle(array) {
 	var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -62,10 +56,10 @@ function shuffle(array) {
 	}
 	return array;
 }
-
-/** Game initiation functions **/
 function startGame() {
-	openedCards=[];
+	modal.classList.remove("modalShow")
+	openedCards = [];
+	starScore = "";
 	let shuffledCards = shuffle(cards);
 	for (let i = 0; i < shuffledCards.length; i++) {
 		[].forEach.call(shuffledCards, function (item) {
@@ -75,44 +69,40 @@ function startGame() {
 	}
 	move = 0;
 	counter.innerHTML = move;
-	for (let i = 0; i < stars.length; i++){
+	for (let i = 0; i < stars.length; i++) {
 		stars[i].style.visibility = "visible";
 	}
-	second = 0;
+	second = 1;
 	minute = 0;
 	hour = 0;
 	let clock = document.querySelector(".clock");
 	clock.innerHTML = "0 mins 0 secs";
-	clearInterval(interval);
-
+	clearInterval(time);
 }
 window.onload = startGame();
 
-
-
-/** Modal toggle functions **/
-function toggleModal() {
-	modal.classList.toggle("show-modal");
+//CARD FUNCTIONS
+function displayCard() {
+	this.classList.toggle("disabled");
+	this.classList.toggle("open");
+	this.classList.toggle("show");
+	cardOpen();
 }
-function windowOnClick() {
-	if (event.target === modal) {
-		toggleModal();
-	}
+function addToArray(){
+	openedCards.push(this);
 }
-
-/** Matching functions **/
 function cardOpen() {
 	let length = openedCards.length;
 	if (length === 2) {
 		moveCounter();
 		if (openedCards[0].type === openedCards[1].type) {
-			matched();
+			cardMatched();
 		} else {
-			unmatched();
+			cardUnmatched();
 		}
 	}
-};
-function matched() {
+}
+function cardMatched() {
 	openedCards[0].classList.add("match", "disabled");
 	openedCards[1].classList.add("match", "disabled");
 	openedCards[0].classList.remove("show");
@@ -120,31 +110,36 @@ function matched() {
 	openedCards = [];
 	checkMatchedCards();
 }
-function unmatched() {
+function cardUnmatched() {
 	openedCards[0].classList.add("noMatch");
 	openedCards[1].classList.add("noMatch");
-	disable();
+	cardDisable();
 	setTimeout(function () {
 		openedCards[0].classList.remove("show", "open", "noMatch");
 		openedCards[1].classList.remove("show", "open", "noMatch");
-		enable();
+		cardEnable();
 		openedCards = [];
-	}, 0750);
+	}, 1000);
 }
 function checkMatchedCards() {
 	if (matchedCard.length == 16) {
-		toggleModal();
+		gameOver();
 	}
 }
-
-
-/** Disabling/enabling cards **/
-function disable() {
+function cardSetClass() {
+	for (let i = 0; i < card.length; i++) {
+		matchedCards[i].classList.add("open");
+		matchedCards[i].classList.add("show");
+		matchedCards[i].classList.add("match");
+		matchedCards[i].classList.add("disabled");
+	}
+}
+function cardDisable() {
 	Array.prototype.filter.call(cards, function (card) {
 		card.classList.add('disabled');
 	});
 }
-function enable() {
+function cardEnable() {
 	Array.prototype.filter.call(cards, function (card) {
 		card.classList.remove('disabled');
 		for (var i = 0; i < matchedCard.length; i++) {
@@ -153,7 +148,7 @@ function enable() {
 	});
 }
 
-/** move count related functions **/
+//MOVE FUNCTION
 function moveCounter() {
 	move++;
 	counter.innerHTML = move;
@@ -161,6 +156,7 @@ function moveCounter() {
 		for (i = 0; i < 3; i++) {
 			if (i > 1) {
 				stars[i].style.visibility = "collapse";
+				stars[i].classList.remove("active");
 			}
 		}
 	}
@@ -168,39 +164,36 @@ function moveCounter() {
 		for (i = 0; i < 3; i++) {
 			if (i > 0) {
 				stars[i].style.visibility = "collapse";
+				stars[i].classList.remove("active");
 			}
 		}
 	}
 	if (move == 1) {
-		second = 0;
+		second = 1;
 		minute = 0;
 		hour = 0;
 		startTimer();
 	}
 }
-
-
-/*
-1. Display the cards on the page
-	A. DONE - shuffle the list of cards using the provided "shuffle" method.
-	B. DONE - loop through each card and create its HTML.
-	C. DONE - add each card's HTML to the page.
-
-2. Set up the event listener for a card. If a card is clicked:
-	A. DONE - display the card's symbol (put this functionality in another function that you call from this one)
-	B. DONE - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
-	C. DONE - if the list already has another card, check to see if the two cards match
-		AA. DONE - if the cards match, lock them in the open position (put this functionality in another function that you call from this one)
-		BB. DONE - if the cards don't match, remove them from the list and hide the card's symbol (put this functionality in another function)
-		CC. DONE - increment the move counter and display it on the page (put this functionality in another function)
-		DD.  - if all cards match, display a modal with a message, final rating, and time to win (put this functionality in another function)
-		EE. DONE - in the modal, the player should be asked if they want to play again.
-
-3. DONE - When starting a game, a displayed timer should also start. Once the player wins the game, the timer stops.
-
-4. DONE - The game should display a star rating (from 1 to 3) reflecting the player's performance. It should display at least 3 stars at the start and go down after some moves.
-
-5.  - A restart button should allow the player to reset the game board, the timer, and the star rating.
-
-6.  - All application components are usable across modern desktop, tablet, and phone browsers.
-*/
+//GAME END FUNCTIONS
+function gameScore() {
+	let starNode = document.querySelectorAll(".active");
+	for (let i = 0; i < starNode.length; i++) {
+		starScore += "<i class='fa fa-star'></i>";
+	}
+}
+function toggleModal() {
+	modal.classList.toggle("modalShow");
+}
+function gameOver() {
+	let completionTime = document.querySelector(".completionTime");
+	let finalMoves = document.querySelector(".finalMoves");
+	let starRating = document.querySelector(".starRating");
+	moveCounter();
+	gameScore();
+	starRating.innerHTML = "Score: " + starScore;
+	finalMoves.innerHTML = "Moves: " + move;
+	completionTime.innerHTML = "You finished in " + minute + " minutes " + (second - 1) + " seconds.";
+	cardSetClass();
+	toggleModal();
+}

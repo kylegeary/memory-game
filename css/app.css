@@ -1,13 +1,11 @@
 html {
     box-sizing: border-box;
 }
-
 *,
 *::before,
 *::after {
     box-sizing: inherit;
 }
-
 html,
 body {
     width: 100%;
@@ -15,12 +13,14 @@ body {
     margin: 0;
     padding: 0;
 }
-
 body {
     background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
 }
-
+h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+}
 .container {
     display: flex;
     justify-content: center;
@@ -28,19 +28,10 @@ body {
     flex-direction: column;
 }
 
-h1 {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
-}
-
-/*
- * Styles for the deck of cards
- */
-
+/* CARDS */
  .clock {
      margin-left: 5.5rem;
  }
-
 .deck {
     width: 660px;
     min-height: 680px;
@@ -54,7 +45,6 @@ h1 {
     align-items: center;
     margin: 0 0 3em;
 }
-
 .deck .card {
     height: 125px;
     width: 125px;
@@ -68,70 +58,73 @@ h1 {
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
-
 .deck .card.clicked {
     cursor: default;
 }
-
 .deck .card.disabled {
-pointer-events: none;
+    pointer-events: none;
 }
-
 .deck .card.open {
-    transform: rotateY(0);
     background: #02b3e4;
-    cursor: default;
 }
-
 .deck .card.show {
     font-size: 33px;
 }
-
 .deck .card.match {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+    -webkit-animation-name: bounce; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 0.75s; /* Safari 4.0 - 8.0 */
+    animation-name: bounce;
+    animation-duration: 0.75s;
 }
-
 .deck .card.noMatch {
-	-webkit-backface-visibility: visible !important;
-	backface-visibility: visible !important;
-	animation-duration: 0.75s;
-	background: #e2043b;
+    background: #e2043b;
+    -webkit-animation-name: bounce; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 0.75s; /* Safari 4.0 - 8.0 */
+    animation-name: bounce;
+    animation-duration: 0.75s;
 }
 
-/*
- * Styles for the Score Panel
- */
+@keyframes bounce {
+    0%   {transform: scale(1.0);}
+    50%  {transform: scale(1.1);}
+    100% {transform: scale(1.0);}
+}
+@-webkit-keyframes bounce {
+    0%   {transform: scale(1.0);}
+    50%  {transform: scale(1.1);}
+    100% {transform: scale(1.0);}
+}
 
 
+
+/* SCORE PANEL */
+.clock {
+    margin-left: 5.5rem;
+}
 .score-panel {
     text-align: left;
     width: 345px;
     margin-bottom: 10px;
 }
-
 .score-panel .stars {
     margin: 0;
     padding: 0;
     display: inline-block;
     margin: 0 5px 0 0;
 }
-
 .score-panel .stars li {
     list-style: none;
     display: inline-block;
 }
-
 .score-panel .restart {
     float: right;
     cursor: pointer;
 }
 
-/*
- * Styles for the modal
- */
-
+/* MODAL */
 .modal {
     z-index: 1;
     position: fixed;
@@ -143,9 +136,9 @@ pointer-events: none;
     opacity: 0;
     visibility: hidden;
     transform: scale(1.1);
-    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+    transition: visibility 0s linear 0.35s, opacity 0.35s 0s, transform 0.35s;
 }
-.modal-content {
+.modalContent {
     z-index: 1;
     position: absolute;
     top: 50%;
@@ -156,20 +149,50 @@ pointer-events: none;
     width: 24rem;
     border-radius: 0.5rem;
 }
-.close-button {
-    float: right;
-    width: 1.5rem;
-    line-height: 1.5rem;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 0.25rem;
-    background-color: lightgray;
+.modalContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    justify-items: center;
 }
-.show-modal {
+.modalShow{
     z-index: 2;
     opacity: 1;
     visibility: visible;
     transform: scale(1.0);
-    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+    transition: visibility 0s linear 0s, opacity 0.35s 0s, transform 0.35s;
+}
+#modalMessage {
+    grid-column: 1 / 3;
+    grid-row: 1;
+}
+#modalTime {
+    grid-column: 1 / 3;
+    grid-row: 2;
+}
+#modalMoves {
+    grid-column: 1 / 2;
+    grid-row: 3;
+}
+#modalStars {
+    grid-column: 2 / 3;
+    grid-row-start: 3;
+}
+#modalButton {
+    grid-column: 1 / 3;
+    grid-row: 4;
+}
+button {
+    display: inline-block;
+    border: none;
+    padding: 1rem 2rem;
+    margin: 0;
+    text-decoration: none;
+    background: #0069ed;
+    color: #ffffff;
+    font-family: sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
 }
 
