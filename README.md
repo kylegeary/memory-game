@@ -1,4 +1,4 @@
 # Memory Game Project
 
-This memory game is built without any frameworks, and only relies on dependencies to pull in the card icons and body fonts. 
+This memory game was built without any framework, and the only external dependencies are for pulling in card icons and body fonts. 
 
